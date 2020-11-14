@@ -39,7 +39,7 @@ Navigate to
 ```
 cd RefixationModel/
 ```
-Download the following folders from [HERE](), unzip them and place in the corresponding directory of this github repository:
+Download the following folders from [HERE](https://drive.google.com/file/d/1qGG8jw6c4W8XigT4WBZX1Wf_IS5FYwNS/view?usp=sharing), unzip them and place in the corresponding directory of this github repository:
 - ```Mat``` folder placed as: ```RefixationModel/IOR_NC/Mat/```
 - ```Datasets``` folder placed as: ```RefixationModel/Datasets/```
 - ```gbvs``` folder placed as: ```RefixationModel/gbvs/```
