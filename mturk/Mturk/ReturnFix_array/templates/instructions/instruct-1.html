@@ -1,0 +1,99 @@
+<div id="container-instructions">
+
+	<h1>Instructions - Visual Similarity Task</h1>
+
+	<hr />
+
+	<div class="instructions well">
+
+	    <p>
+		    Choose ONLY one image (out of Choice A or B) which is more visually similar to the target image
+
+        </p>
+
+    <p>
+    <STRONG>NOTE1: Below is an example trial. In this example, the correct answer is image "B" since it is more visually similar with the target image compared to image A. </STRONG>
+    </p>
+
+    <p>
+    <STRONG>NOTE2: Choose ONE AND ONLY ONE option. You cannot skip to the next trial until you have to make a choice between A and B in the current trial. </STRONG>
+    </p>
+
+
+	    <script type="text/javascript">
+	    //console.log(psiTurk.getInstructionIndicator())
+	    </script>
+
+	</div>
+    <br>
+
+    
+    <div id="images">    
+            <STRONG>Target Image: </STRONG>         
+            <img class="center-block" src="http://kreiman.hms.harvard.edu/mturk/mengmi/exp_ReturnFix/stimuli/array/targetT/stimuli_3_targetT.jpg" alt="stimuli" style="width:10%"/>       
+     </div> 
+
+    <br />
+    <STRONG>Which option A or B is more visually similar to the target image?</STRONG>
+    <br />
+
+    <style>
+    * {
+      box-sizing: padding-box;
+    }
+
+    .column {
+      float: left;
+      width: 40%;
+      padding: 5px;
+    }
+
+    /* Clearfix (clear floats) */
+    .row::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+
+    .fblogo {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;        
+    }
+    #images{
+       text-align:center;
+    }
+
+    </style>
+
+     
+     <div id="images">    
+        
+        <STRONG>Option A: </STRONG>  
+        <img class="fblogo" border="0" src="http://kreiman.hms.harvard.edu/mturk/mengmi/exp_ReturnFix/stimuli/array/RNR/stimuli_3_subj_11_nonReturn.jpg" alt="stimuliL" style="width:10%"/>
+         
+
+         
+        <STRONG>Option B: </STRONG> 
+        <img class="fblogo" border="0" src="http://kreiman.hms.harvard.edu/mturk/mengmi/exp_ReturnFix/stimuli/array/RNR/stimuli_3_subj_11_Return.jpg" alt="stimuliF" style="width:10%"/>
+        
+    </div> 
+       
+              
+    
+
+    <center>Choose ONLY one option:</center>
+    <center><input type="radio" id="r1" name="choice" value=1> A <br><center>
+    <center><input type="radio" id="r2" name="choice" value=2 checked = true > B <br><center>
+
+
+    <div class="instructionsnav">
+        <button type="button" id="next" value="next" class="btn btn-primary btn-lg pull-right continue">
+                Next <span class="glyphicon glyphicon-arrow-right"></span>
+        </button>
+    </div>
+
+
+	<hr />
+
+</div>

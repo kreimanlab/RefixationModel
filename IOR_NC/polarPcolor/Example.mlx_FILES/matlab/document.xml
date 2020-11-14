@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:pPr><w:pStyle w:val="title"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_T_48E181BE" w:id="T_48E181BE"/><w:r><w:t>Examples of application of polarPcolor with different options</w:t></w:r><w:bookmarkEnd w:id="T_48E181BE"/></w:p><mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"><mc:Choice Requires="R2018a"><w:sdt><w:sdtPr><w:docPartObj><w:docPartGallery w:val="Table of Contents"/></w:docPartObj></w:sdtPr><w:sdtContent><w:p><w:pPr><w:pStyle w:val="TOCHeading"/><w:jc w:val="left"/></w:pPr><w:r><w:rPr><w:b/></w:rPr><w:t>Table of Contents</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="TOC1"/><w:jc w:val="left"/></w:pPr><w:hyperlink w:anchor="internal:H_797DEA6D"><w:r><w:t>Minimalist example
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_6997043D"><w:r><w:t>Changing the colormap
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_7C4BE9E1"><w:r><w:t>Change the number of colors used
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_51D00865"><w:r><w:t>Use non-equidistant radial circles for the grid
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_80C01828"><w:r><w:t>Different number of circles and ticklabel for the radial axis
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_4A45A53C"><w:r><w:t>Dealing with outliers
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_B238B276"><w:r><w:t>Using polarPcolor without colorbar
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_43244DE2"><w:r><w:t>Different geometry 1
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_F7998627"><w:r><w:t>Different geometry 2
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_86DD0455"><w:r><w:t>Case of logartihmic radial vector
+</w:t></w:r></w:hyperlink><w:hyperlink w:anchor="internal:H_8F39B3BA"><w:r><w:t>Option "autoOrigin"</w:t></w:r></w:hyperlink></w:p></w:sdtContent></w:sdt></mc:Choice><mc:Fallback><w:p><w:pPr><w:pStyle w:val="text"/></w:pPr><w:r><w:t></w:t></w:r></w:p></mc:Fallback></mc:AlternateContent><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_797DEA6D" w:id="H_797DEA6D"/><w:r><w:t>Minimalist example</w:t></w:r><w:bookmarkEnd w:id="H_797DEA6D"/></w:p><w:p><w:pPr><w:pStyle w:val="text"/><w:jc w:val="left"/></w:pPr><w:r><w:t>Assuming that a remote sensor is measuring the wind field for a radial distance ranging from 50 to 1000 m. The scanning azimuth is oriented from North (0 deg) to North-North-East ( 80 deg):</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[R = linspace(50,1500,100)./1000; % (distance in km)
+Az = linspace(0,80,100); % in degrees
+[~,~,windSpeed] = peaks(100); % radial wind speed
+figure
+polarPcolor(R,Az,windSpeed); % colormap is here an optional argument]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_6997043D" w:id="H_6997043D"/><w:r><w:t>Changing the colormap</w:t></w:r><w:bookmarkEnd w:id="H_6997043D"/></w:p><w:p><w:pPr><w:pStyle w:val="text"/><w:jc w:val="left"/></w:pPr><w:r><w:t>The colormap is changed from parula to Hot</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[figure
+polarPcolor(R,Az,windSpeed,'colormap','hot'); % colormap is here an optional argument]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_7C4BE9E1" w:id="H_7C4BE9E1"/><w:r><w:t>Change the number of colors used</w:t></w:r><w:bookmarkEnd w:id="H_7C4BE9E1"/></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[figure
+polarPcolor(R,Az,windSpeed,'ncolor',10); % Only 10 different colors are specified
+]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_51D00865" w:id="H_51D00865"/><w:r><w:t>Use non-equidistant radial circles for the grid</w:t></w:r><w:bookmarkEnd w:id="H_51D00865"/></w:p><w:p><w:pPr><w:pStyle w:val="text"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_5E991395" w:id="H_5E991395"/><w:r><w:t>In this case, the option 'circlesPos' has to be used and</w:t></w:r><w:r><w:rPr><w:u/></w:rPr><w:t> the options "Nircles" and "Origin" are overwritten</w:t></w:r><w:bookmarkEnd w:id="H_5E991395"/></w:p><w:p><w:pPr><w:pStyle w:val="text"/><w:jc w:val="left"/></w:pPr><w:r><w:t>Note that the vector "pos" includes the radius 0, which is outside the data range. Therefore, it isautomatically removed from the plot.</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[
+pos = [0 0.4125    0.7750    1.1375  1.3  1.4]; % Distance of the different circles from the origin
+figure
+[~,c]=polarPcolor(R,Az,windSpeed,'circlesPos',pos,'ncolor',10);
+ylabel(c,' radial wind speed (m/s)');
+set(gcf,'color','w')]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_80C01828" w:id="H_80C01828"/><w:r><w:t>Different number of circles and ticklabel for the radial axis</w:t></w:r><w:bookmarkEnd w:id="H_80C01828"/></w:p><w:p><w:pPr><w:pStyle w:val="text"/><w:jc w:val="left"/></w:pPr><w:r><w:t>We want to have 4 circles and 7 spokes, and to give a label to the radial coordinate</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[Rticks = {'a','b','c','5'}; % tick label for the radial axis. If defined, it must be a cell array of characters with numel(Ritcks)=Ncircles
+Ncircles = 4;
+figure
+[~,c]=polarPcolor(R,Az,windSpeed,'labelR','r (km)','Ncircles',Ncircles,'Nspokes',7,'Rticklabel',Rticks);
+ylabel(c,' radial wind speed (m/s)');
+set(gcf,'color','w')]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_4A45A53C" w:id="H_4A45A53C"/><w:r><w:t>Dealing with outliers</w:t></w:r><w:bookmarkEnd w:id="H_4A45A53C"/></w:p><w:p><w:pPr><w:pStyle w:val="text"/><w:jc w:val="left"/></w:pPr><w:r><w:t>We introduce outliers in the wind velocity data. These outliers are represented as wind speed sample with a value of 100 m/s. These corresponds to unrealistic data that need to be ignored. To avoid bad scaling of the colorbar, the function polarPcolor uses the function caxis combined to the function quantile to keep the colorbar properly scaled: caxis([quantile(Z(:),0.01),quantile(Z(:),0.99)])</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[
+windSpeed(1:10:end,1:20:end)=100;
+figure
+[~,c]=polarPcolor(R,Az,windSpeed);
+ylabel(c,' radial wind speed (m/s)');
+set(gcf,'color','w')
+]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_B238B276" w:id="H_B238B276"/><w:r><w:t>Using polarPcolor without colorbar</w:t></w:r><w:bookmarkEnd w:id="H_B238B276"/></w:p><w:p><w:pPr><w:pStyle w:val="text"/><w:jc w:val="left"/></w:pPr><w:r><w:t>The colorbar is activated by default. It is possible to remove it by using the option 'colBar'. When the colorbar is desactivated, the outliers are not "removed" and bad scaling is clearly visible:</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[figure
+polarPcolor(R,Az,windSpeed,'colBar',0) ;]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_43244DE2" w:id="H_43244DE2"/><w:r><w:t>Different geometry 1</w:t></w:r><w:bookmarkEnd w:id="H_43244DE2"/></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[N = 360;
+R = linspace(0,1000,N)./1000; % (distance in km)
+Az = linspace(0,360,N); % in degrees
+[~,~,windSpeed] = peaks(N); % radial wind speed
+figure
+[~,c]= polarPcolor(R,Az,windSpeed);
+ylabel(c,' radial wind speed (m/s)');
+set(gcf,'color','w')]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_F7998627" w:id="H_F7998627"/><w:r><w:t>Different geometry 2</w:t></w:r><w:bookmarkEnd w:id="H_F7998627"/></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[N = 360;
+R = linspace(500,1500,N)./1000; % (distance in km)
+Az = linspace(0,270,N); % in degrees
+[~,~,windSpeed] = peaks(N); % radial wind speed
+figure
+[~,c]= polarPcolor(R,Az,windSpeed,'Ncircles',3);
+location = 'NorthOutside';
+ylabel(c,' radial wind speed (m/s)');
+set(c,'location',location);
+set(gcf,'color','w')]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_86DD0455" w:id="H_86DD0455"/><w:r><w:t>Case of logartihmic radial vector</w:t></w:r><w:bookmarkEnd w:id="H_86DD0455"/></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[clf;close all;
+R = logspace(log10(0.013),log10(1000),100); % radial vector
+% R = logspace(-3,1,100); % radial vector
+Az = linspace(0,180,200); % in degrees
+Z = exp(-0.5*R(:))*cosd(90-2*Az); 
+[X,Y] = meshgrid(R,Az);
+
+figure
+
+subplot(221)
+hold on; box on
+pcolor(X',Y',Z);shading flat;
+xlabel('R')
+ylabel('\theta (deg)')
+grid on
+axis tight
+set(gca,'layer','top')
+title('linear scale')
+
+subplot(222)
+pcolor(X',Y',Z);shading flat;
+set(gca,'xscale','log')
+xlabel('R')
+ylabel('\theta (deg)')
+grid on
+set(gca,'layer','top')
+title('semilogx scale')
+
+subplot(223)
+polarPcolor(R,Az,Z,'Rscale','linear','Ncircles',5,'Nspokes',5)
+caxis([-1,1])
+colorbar off
+title('linear scale')
+
+subplot(224)
+polarPcolor(R,Az,Z,'Rscale','log','Ncircles',5,'Nspokes',5)
+% the warning above is normal (see next section)
+
+caxis([-1,1])
+set(gcf,'color','w')
+colorbar off
+title('semilog scale')]]></w:t></w:r></w:p><w:p><w:pPr><w:sectPr/></w:pPr></w:p><w:p><w:pPr><w:pStyle w:val="heading"/><w:jc w:val="left"/></w:pPr><w:bookmarkStart w:name="MW_H_8F39B3BA" w:id="H_8F39B3BA"/><w:r><w:t>Option "autoOrigin"</w:t></w:r><w:bookmarkEnd w:id="H_8F39B3BA"/></w:p><w:p><w:pPr><w:pStyle w:val="text"/><w:jc w:val="left"/></w:pPr><w:r><w:t>The option 'autoOrigin' can be 'on' (default) where the first circle of the plar grid has a radius equal to the lowest value of R. If  'autoOrigin' is set as 'off, the first circle of the plar grid has a radius equal to zero.  The option 'circlesPos' has also priority over 'autoOrigin' so contradictory specifications in 'circlesPos' and 'autoOrigin' will give priority to  'circlesPos'. Note that this option is not compatible with Rscale = 'log'.</w:t></w:r></w:p><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[clf;close all;
+R = linspace(10,50,100); % radial vector
+% R = logspace(-3,1,100); % radial vector
+Az = linspace(0,180,200); % in degrees
+Z = exp(-0.05*R(:))*cosd(90-2*Az); 
+[X,Y] = meshgrid(R,Az);
+figure
+subplot(211)
+polarPcolor(R,Az,Z,'Rscale','lin','Ncircles',4,'Nspokes',5,'autoOrigin','on'); % default option 
+subplot(212)
+polarPcolor(R,Az,Z,'Rscale','lin','Ncircles',4,'Nspokes',5,'autoOrigin','off');   % force polar plot to be centered in Rmin]]></w:t></w:r></w:p></w:body></w:document>
