@@ -9,6 +9,11 @@ import numpy as np
 import random
 from PIL import Image
 
+
+print(' Computing Model ')
+
+entro_folder = 'x'
+
 #train scanpath prediction
 # Applying Transforms to the Data
 image_transforms = { 
@@ -32,7 +37,7 @@ transform = image_transforms['train']
 
 # Data parameters
 split = '1' #cross validation choose among 1 - 3
-datatype = 'waldo' #choose one among waldo, naturaldesign, cmonkey, wmonkey, naturalsaliency
+datatype = 'array' #choose one among waldo, naturaldesign, cmonkey, wmonkey, naturalsaliency, array
 deterministic = False #flag indicating whether taking the max or sampling from policy
 topK = 1 #take the sample from top K max probability
 n_channel = 3
@@ -43,6 +48,9 @@ print('no training. see below for loaded weights')
 
     
 saveresultdir = 'results_' + datatype + '/'
+
+if not os.path.exists(saveresultdir):
+    os.mkdir(saveresultdir)
 
 workers = 1  # for data-loading; right now, only 1 works with h5py
 imgsize = 1024/16 #image size
@@ -127,7 +135,9 @@ if __name__ == '__main__':
 #    print(images[0].min())
     #print(images[1].max())
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model = torch.load(savemoddir + '_model_split_' + split + '_epoch_' + str(itermodel) + '.pt')
+    #model = torch.load(savemoddir + '_model_split_' + split + '_epoch_' + str(itermodel) + '.pt')
+    print(savemoddir + '_model_split_' + split + '_epoch_' + str(itermodel) + '.pt')
+    model = torch.load(savemoddir + '_model_split_' + split + '_epoch_' + str(itermodel) + '.pt',map_location=torch.device('cpu'))
     #model = model.conv1
     model = model.eval().to(device)
 #    print('weight:')
@@ -138,8 +148,8 @@ if __name__ == '__main__':
     
     with torch.no_grad():        
         model.conv1.weight[0, 0, 0, 0] = 1 #sal 1
-        model.conv1.weight[0, 1, 0, 0] = 0.2346 #sac 0.2346
-        model.conv1.weight[0, 2, 0, 0] = -0.93 #IOR -0.93
+        model.conv1.weight[0, 1, 0, 0] = 0.2346  #sac 0.2346
+        model.conv1.weight[0, 2, 0, 0] =  -0.93  #IOR -0.93
 #        
 #    print('weight:')
 #    print(model.conv1.weight)
@@ -177,10 +187,13 @@ if __name__ == '__main__':
         
         for t in range(NumFixSteps):
             
+            #model.conv1.weight[0, 2, 0, 0] = random.random() * -1 # for mem abla # comment if not used
             inputs, IORcopy, sacpriorTcopy = MyDataset.step(imgname, fix)
-            inputs = inputs.view(1, n_channel, imgsize, imgsize).cuda()
+            #inputs = inputs.view(1, n_channel, imgsize, imgsize).cuda()
+            inputs = inputs.view(1, n_channel, imgsize, imgsize)
             #print(inputs.shape)
-            outputs = model(inputs).cuda()            
+            #outputs = model(inputs).cuda()            
+            outputs = model(inputs)
             #print(outputs.shape)
             outputs = outputs.exp().detach().cpu()
             
@@ -195,23 +208,42 @@ if __name__ == '__main__':
             
             #print(outputs.shape)
             
-            if deterministic:
+
+            # # previous version:
+            # if deterministic:
+            #     ret, predictions = torch.max(outputs, 1)
+            # else:
+            #     #dist = torch.distributions.Categorical(logits=outputs)
+            #     #predictions = dist.sample().view(1,1)
+            #     #print(predictions)
+            #     sortedval, indices = torch.sort(outputs, dim = 1, descending = True)
+            #     dist = torch.distributions.Categorical(logits=sortedval[0][0:topK])
+            #     predictions_ind = dist.sample().view(1,1)
+            #     #print(predictions_ind)
+            #     #print(indices.shape)
+            #     #print(sortedval)
+            #     #ind = random.randint(0,topK)
+            #     #print(ind)
+            #     predictions = indices[0][predictions_ind]
+            #     #print(predictions)
+                
+
+            # mod version 
+            if deterministic: # 1. deterministic, get the max
                 ret, predictions = torch.max(outputs, 1)
             else:
-#                dist = torch.distributions.Categorical(logits=outputs)
-#                predictions = dist.sample().view(1,1)
-                #print(predictions)
-                sortedval, indices = torch.sort(outputs, dim = 1, descending = True)
-                dist = torch.distributions.Categorical(logits=sortedval[0][0:topK])
-                predictions_ind = dist.sample().view(1,1)
-                #print(predictions_ind)
-                #print(indices.shape)
-#                print(sortedval)
-                #ind = random.randint(0,topK)
-#                print(ind)
-                predictions = indices[0][predictions_ind]
-#                print(predictions)
-                
+                if topK > 0: # 2. choose next fix randomly within the topK
+                    sortedval, indices = torch.sort(outputs, dim = 1, descending = True)
+                    dist = torch.distributions.Categorical(logits=sortedval[0][0:topK])
+                    predictions_ind = dist.sample().view(1,1)
+                    predictions = indices[0][predictions_ind]
+                else: # 3. choose next fix from the distribution
+                    dist = torch.distributions.Categorical(logits=outputs)
+                    predictions_ind = dist.sample().view(1,1)
+                    predictions = predictions_ind
+
+
+
             
             #print(predictions)
             fix.append(predictions.item())
@@ -251,13 +283,14 @@ if __name__ == '__main__':
         print(fix)
         #print(psmat.shape)
         #print(IOR.shape)
-        #print(sacprior.shape)
-        
+        #print(sacprior.shape)                
+
         sio.savemat(saveresultdir + imgname + '.mat', {'fix':fix, 'psmat': psmat, 'sacprior': sacprior, 'IOR':IOR})
     
     
     
-    
+print(' Model computed')
+
     
     
     
