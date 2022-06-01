@@ -8,7 +8,7 @@ for this_Deg = these_Degs
     save_Mat_bar_IOR = 1;
     
     
-    TYPELIST = {'wmonkey','cmonkey'};
+    TYPELIST = {'wmonkey_conv_only','cmonkey_conv_only'};
     % TYPELIST = {'wmonkey_conv_only'};
     %type = 'wmonkey_curiosity_recog'; %wmonkey, cmonkey, wmonkey_scanpathpred_infor, wmonkey_scanpathpred, wmonkey_curiosity_recog
     
@@ -200,7 +200,7 @@ for this_Deg = these_Degs
             %% -------------------------------------------------
             
             %% show IOR prop (overall)
-            hb = figure('Visible','off','Position',[288   207    85   258]); hold on;
+            hb = figure('Position',[288   207    85   258]); hold on;
             
             set(gca,'linewidth',2);
             %load(['Mat/saccade_' type  '.mat']);
@@ -281,8 +281,8 @@ for this_Deg = these_Degs
             set(hb,'Units','Inches');
             pos = get(hb,'Position');
             set(hb,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)]);
-            print(hb,['Figures/Fig_IOR_first_overall_' type '_s' num2str(su,'%02d') '_Deg_' num2str(Deg*100) printpostfix],printmode,printoption);
-            print(hb,['Figures/Fig_IOR_first_overall_' type '_s' num2str(su,'%02d') '_Deg_' num2str(Deg*100) printpostfix2],printmode2,printoption2); 
+            print(hb,['Figures/Figs_IOR_first_overall_' type '_s' num2str(su,'%02d') '_Deg_' num2str(Deg*100) printpostfix],printmode,printoption);
+            print(hb,['Figures/Figs_IOR_first_overall_' type '_s' num2str(su,'%02d') '_Deg_' num2str(Deg*100) printpostfix2],printmode2,printoption2); 
             
             
             %% ------------------------------------------------- 
@@ -294,7 +294,7 @@ for this_Deg = these_Degs
             
             
             %% show IOR offset (overall)
-            hb = figure('Visible','off'); hold on;
+            hb = figure; hold on;
             
             if strcmp(type, subtype{1})
                 set(hb,'Position',[308   368   127   117]);
@@ -338,8 +338,8 @@ for this_Deg = these_Degs
             set(hb,'Units','Inches');
             pos = get(hb,'Position');
             set(hb,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)]);
-            print(hb,['Figures/Fig_IORoffsetFirstOnly_' type '_s' num2str(su,'%02d') '_Deg_' num2str(Deg*100) printpostfix],printmode,printoption);
-            print(hb,['Figures/Fig_IORoffsetFirstOnly_' type '_s' num2str(su,'%02d') '_Deg_' num2str(Deg*100) printpostfix2],printmode2,printoption2); 
+            print(hb,['Figures/Figs_IORoffsetFirstOnly_' type '_s' num2str(su,'%02d') '_Deg_' num2str(Deg*100) printpostfix],printmode,printoption);
+            print(hb,['Figures/Figs_IORoffsetFirstOnly_' type '_s' num2str(su,'%02d') '_Deg_' num2str(Deg*100) printpostfix2],printmode2,printoption2); 
             
             
             %% ------------------------------------------------- 

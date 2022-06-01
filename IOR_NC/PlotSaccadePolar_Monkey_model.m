@@ -1,7 +1,7 @@
 clear all; close all; clc;
 addpath('IOR_NC/polarPcolor');
 
-TYPELIST = {'egteaplus','os'};
+TYPELIST = {'wmonkey_conv_only','cmonkey_conv_only'};
 
 
 printpostfix = '.eps';
@@ -11,46 +11,48 @@ printpostfix2 = '.png';
 printmode2 = '-dpng'; %-depsc
 printoption2 = '-r200'; %'-fillpage'
 
-        fig1_turning_angle = {};
+fig1_turning_angle = {};
 
 for T = 1:length(TYPELIST)
     
     type = TYPELIST{T}; %egteaplus, os
-    
-    %note: three datasets have not re-sequentalized; reorder first!
-    % the first fixation is always the center; remove the first fix!
-    % the reaction time lasts from the first fix to the trial start!
-    if strcmp(type, 'os')
-        imgsize = 1280;
-        %ImgFolder = '/home/mengmi/Desktop/saliency/monkey_eyetracking/AllStimuli/';
-        visualdeg=1280/60;
-    elseif strcmp(type, 'egteaplus')
-        imgsize = 1280;
-        %ImgFolder = '/media/mengmi/TOSHIBABlue1/Proj_memory/IOR_NC/WMonkey/stimuli/';
-        visualdeg=1280/60;
-    else
-        imgsize = 1280;
-        visualdeg = 1280/130;
-    end
-    
-    load(['Mat/' type '_Fix.mat']);
-%     printpostfix = '.eps';
-%     printmode = '-depsc'; %-depsc
-%     printoption = '-r200'; %'-fillpage'
-    Imgw = imgsize;
-    w = Imgw;
-    Imgh  = imgsize;
-    h = Imgh;
-    RadiusDegConvert = visualdeg;
+    %
+    %     printpostfix = '.eps';
+    %     printmode = '-depsc'; %-depsc
+    %     printoption = '-r200'; %'-fillpage'
     
     linewidth  =2;
     
     if 1
         
-        %% comment out
+        %note: three datasets have not re-sequentalized; reorder first!
+        % the first fixation is always the center; remove the first fix!
+        % the reaction time lasts from the first fix to the trial start!
+        if strcmp(type, 'cmonkey')
+            imgsize = 596;
+            ImgFolder = '/home/mengmi/Desktop/saliency/monkey_eyetracking/AllStimuli/';
+            visualdeg=39.7;
+        else
+            imgsize = 596;
+            ImgFolder = '/media/mengmi/TOSHIBABlue1/Proj_memory/IOR_NC/WMonkey/stimuli/';
+            visualdeg=39.7*imgsize/635;
+        end
+        
+        load(['Mat/' type '_Fix.mat']);
+        
+        Imgw = imgsize;
+        w = Imgw;
+        Imgh  = imgsize;
+        h = Imgh;
+        RadiusDegConvert = visualdeg;
+        
+        
+        % %% comment out
         SIMRETURN_Radius = []; SIMNONRETURN_Radius = []; SIMRETURN2_Radius = [];
         SIMRETURN_Angle = []; SIMNONRETURN_Angle = []; SIMRETURN2_Angle = [];
+        
         SIMRETURN_subj = []; SIMNONRETURN_subj = [];  SIMRETURN2_subj = [];
+        
         
         PosX = Fix_posx;
         PosY = Fix_posy;
@@ -69,6 +71,7 @@ for T = 1:length(TYPELIST)
             if length(fx)== 1
                 continue;
             end
+            
             
             
             fx = fx(2:end);
@@ -191,6 +194,7 @@ for T = 1:length(TYPELIST)
                 end
             end
             
+            %% saccade at non-return
             load(['Mat_IOR_' type '/' type '_stimuli_' num2str(i) '.mat']);
             
             overlap = [];
@@ -223,32 +227,43 @@ for T = 1:length(TYPELIST)
                 end
             end
             
-            s = Fix_subj{i};
+            if strcmp(type, 'wmonkey') || strcmp(type, 'cmonkey')
+                s = Fix_subj{i};
+            end
             
             SIMRETURN_Radius = [SIMRETURN_Radius sim_R_radius];
             SIMRETURN_Angle = [SIMRETURN_Angle sim_R_angle];
             
+            if strcmp(type, 'wmonkey') || strcmp(type, 'cmonkey')
+                SIMRETURN_subj = [SIMRETURN_subj s*ones(1, length(sim_R_radius) ) ];
+            end
+            
             SIMRETURN2_Radius = [SIMRETURN2_Radius sim_R_radius2];
             SIMRETURN2_Angle = [SIMRETURN2_Angle sim_R_angle2];
+            
+            if strcmp(type, 'wmonkey') || strcmp(type, 'cmonkey')
+                SIMRETURN2_subj = [SIMRETURN2_subj s*ones(1, length(sim_R_radius2) ) ];
+            end
             
             SIMNONRETURN_Angle = [SIMNONRETURN_Angle sim_NR_angle];
             SIMNONRETURN_Radius = [SIMNONRETURN_Radius sim_NR_radius];
             
-            SIMRETURN_subj = [SIMRETURN_subj s*ones(1, length(sim_R_radius) ) ];
-            SIMRETURN2_subj = [SIMRETURN2_subj s*ones(1, length(sim_R_radius2) ) ];
-            SIMNONRETURN_subj = [SIMNONRETURN_subj s*ones(1, length(sim_NR_radius) ) ];
+            if strcmp(type, 'wmonkey') || strcmp(type, 'cmonkey')
+                SIMNONRETURN_subj = [SIMNONRETURN_subj s*ones(1, length(sim_NR_radius) ) ];
+            end
             
         end
-        
         
         SIMRETURN_Radius = SIMRETURN_Radius/RadiusDegConvert;
         SIMRETURN2_Radius = SIMRETURN2_Radius/RadiusDegConvert;
         SIMNONRETURN_Radius= SIMNONRETURN_Radius/RadiusDegConvert;
         
-        IORthresT = 0.5; %133/2/(156/5);
-        SIMRETURN_subj(find(SIMRETURN_Radius < IORthresT)) = [];
-        SIMRETURN2_subj(find(SIMRETURN2_Radius < IORthresT)) = [];
-        SIMNONRETURN_subj(find(SIMNONRETURN_Radius < IORthresT)) = [];
+        IORthresT = 0.5; %remove those fixation distance less than 1; 133/2/(43);
+        if strcmp(type, 'wmonkey') || strcmp(type, 'cmonkey')
+            SIMRETURN_subj(find(SIMRETURN_Radius < IORthresT)) = [];
+            SIMRETURN2_subj(find(SIMRETURN2_Radius < IORthresT)) = [];
+            SIMNONRETURN_subj(find(SIMNONRETURN_Radius < IORthresT)) = [];
+        end
         
         SIMRETURN_Angle(find(SIMRETURN_Radius < IORthresT)) = [];
         SIMRETURN_Radius(find(SIMRETURN_Radius < IORthresT)) = [];
@@ -257,25 +272,36 @@ for T = 1:length(TYPELIST)
         SIMNONRETURN_Angle(find(SIMNONRETURN_Radius < IORthresT)) = [];
         SIMNONRETURN_Radius(find(SIMNONRETURN_Radius < IORthresT)) = [];
         
-        
-        save(['IOR_NC/Mat/saccade_' type  '.mat'],'SIMRETURN_Radius','SIMRETURN_Angle','SIMNONRETURN_Angle',...
-            'SIMNONRETURN_Radius','SIMRETURN2_Angle','SIMRETURN2_Radius',...
-            'SIMRETURN_subj','SIMRETURN2_subj','SIMNONRETURN_subj');
+        if strcmp(type, 'wmonkey') || strcmp(type, 'cmonkey')
+            save(['IOR_NC/Mat/saccade_' type  '.mat'],'SIMRETURN_Radius','SIMRETURN_Angle',...
+                'SIMRETURN2_Radius','SIMRETURN2_Angle','SIMNONRETURN_Angle','SIMNONRETURN_Radius',...
+                'SIMRETURN_subj','SIMRETURN2_subj','SIMNONRETURN_subj');
+        else
+            save(['IOR_NC/Mat/saccade_' type  '.mat'],'SIMRETURN_Radius','SIMRETURN_Angle',...
+                'SIMRETURN2_Radius','SIMRETURN2_Angle','SIMNONRETURN_Angle','SIMNONRETURN_Radius');
+        end
         
     end
-    %%
     
     %hb = figure('Visible','off'); hold on;
     load(['Mat/saccade_' type '.mat']);
     
-
-    if 1        
+        
+    if isempty(SIMRETURN_Angle); SIMRETURN_Angle = 0; end
+    if isempty(SIMRETURN_Radius); SIMRETURN_Radius = 0; end
+    if isempty(SIMRETURN2_Angle); SIMRETURN2_Angle = 0; end
+    if isempty(SIMRETURN2_Radius); SIMRETURN2_Radius = 0; end
+    if isempty(SIMNONRETURN_Angle); SIMNONRETURN_Angle = 0; end
+    if isempty(SIMNONRETURN_Radius); SIMNONRETURN_Radius = 0; end
+    
+    
+    if 1
         %% to be revisited  (polar plot)
         R = linspace(0,20,5);
         theta = linspace(0,180.1,20);
         %Z = hist3([SIMRETURN_Radius' SIMRETURN_Angle'],'Ctrs',{R theta});
         Z = hist3([SIMRETURN_Radius' SIMRETURN_Angle'],'Edges',{R theta});
-        Z = 100*Z/sum(sum(Z));
+        Z = 100*Z/sum(sum(Z)); % Z contains the proportion
         hb = figure('Visible','off');
         [pp, cc] = polarPcolor(R,theta,Z,'Ncircles',5,'Nspokes',7);;
         %caxis([0 0.5])
@@ -317,6 +343,7 @@ for T = 1:length(TYPELIST)
         Z = 100*Z/sum(sum(Z));
         hb = figure('Visible','off');
         [pp, cc] = polarPcolor(R,theta,Z,'Ncircles',5,'Nspokes',7);
+        %caxis([0 0.5])
         caxis([0 max(Z(:))])
         title({[type ' : Return Fixations'];' ';' '},'fontsize',14,'interpreter','none');
         hb.Units = 'normalized'; hb.Position(4) = hb.Position(4)*1.1; cc.Units = 'points'; pp.Parent.Units = 'points';
@@ -324,7 +351,7 @@ for T = 1:length(TYPELIST)
         set(hb,'Units','Inches');
         pos = get(hb,'Position');
         set(hb,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)]);
-                set(gca,'FontSize',14)
+        set(gca,'FontSize',14)
         print(hb,['Figures/Figs_Saccade_RF_' type printpostfix],printmode,printoption);
         print(hb,['Figures/Figs_Saccade_RF_' type printpostfix2],printmode2,printoption2);
         
@@ -346,7 +373,7 @@ for T = 1:length(TYPELIST)
         %% -----------------------
         
         %hb = figure('Visible','off'); hold on;
-        load(['Mat/saccade_' type '.mat']);
+%         load(['Mat/saccade_' type '.mat']);
         
         %% overall saccade
         R = linspace(0,20,5);
@@ -363,7 +390,7 @@ for T = 1:length(TYPELIST)
         set(hb,'Units','Inches');
         pos = get(hb,'Position');
         set(hb,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)]);
-                set(gca,'FontSize',14)
+        set(gca,'FontSize',14)
         print(hb,['Figures/Figs_Saccade_NRF_' type printpostfix],printmode,printoption);
         print(hb,['Figures/Figs_Saccade_NRF_' type printpostfix2],printmode2,printoption2);
         
@@ -393,15 +420,15 @@ for T = 1:length(TYPELIST)
         bincounts = histc(SIMNONRETURN_Radius,binranges);
         bincounts = bincounts/sum(bincounts);
         plot(binranges, bincounts*100,'Color','b','LineWidth',linewidth,'LineStyle','--');
-        legend({'Return fixations','Non-return fixations'},'Location','northeast','FontSize',14);
+        legend({'Return fixations','Non-return fixations'},'Location','northeast','fontsize',14,'interpreter','none');
         legend boxoff ;
         xlim([0 40]);
         xtickrange = [0:5:40];
         set(gca,'XTick',xtickrange);
         yaxislim = [0 80];
         ylim(yaxislim);
-        xlabel('Saccade size (deg)','FontSize',14);
-        ylabel('Distribution (%)','FontSize',14);
+        xlabel('Saccade size (deg)','fontsize',14,'interpreter','none');
+        ylabel('Distribution (%)','fontsize',14,'interpreter','none');
         [h pval] = ttest2(SIMRETURN2_Radius, SIMNONRETURN_Radius);
         title([type '; p = ' num2str(pval)],'FontSize', 14);
         set(gca, 'TickDir', 'out');
@@ -429,15 +456,19 @@ for T = 1:length(TYPELIST)
     xtickrange = [1:3];
     set(gca,'XTick',xtickrange,'FontSize',11);
     %set(gca,'XTickLabel',{'To-be-revisited','Return','Non-Return'},'FontSize',12);
-    set(gca,'XTickLabel',{},'FontSize',12);
-    set(gca,'YTickLabel',{},'FontSize',12);
-    
     set(gca,'XTickLabelRotation',45);
     yaxislim = [0 15.5];
     ytickrange = [0:5:15];
     set(gca,'YTick',ytickrange,'FontSize',11);
     ylim(yaxislim);
-    %ylabel('Saccade Size (dva)','FontSize',12);
+    if contains(type,'_')
+        %ylabel('Saccade Size (dva)','FontSize',12);
+    else
+        
+        %ylabel('Saccade Size (dva)','FontSize',12);
+    end
+    set(gca,'XTickLabel',{},'FontSize',12);
+    set(gca,'YTickLabel',{},'FontSize',12);
     
     [a p1] = ttest2(SIMRETURN_Radius, SIMNONRETURN_Radius);
     [a p2] = ttest2(SIMRETURN2_Radius, SIMNONRETURN_Radius);
@@ -475,7 +506,13 @@ for T = 1:length(TYPELIST)
     
     set(gca, 'TickDir', 'out');
     set(gca, 'Box','off');
-    set(hb,'Position',[303   363   122   117]);
+    if contains(type,'_')
+        set(hb,'Position',[288   207   199   258]);
+    else
+        
+        set(hb,'Position',[303   363   122   117]);
+        
+    end
     set(hb,'Units','Inches');
     pos = get(hb,'Position');
     set(hb,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)]);
@@ -484,5 +521,4 @@ for T = 1:length(TYPELIST)
     
 end
 
-save('Figures/fig1_turning_angle_ego.mat','fig1_turning_angle');
-
+save('Figures/fig1_turning_angle_monkey.mat','fig1_turning_angle');

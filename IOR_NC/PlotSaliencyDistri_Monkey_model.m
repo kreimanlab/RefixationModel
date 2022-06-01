@@ -1,7 +1,7 @@
 clear all; clc; close all;
 
 
-TYPELIST = {'cmonkey','wmonkey'};
+TYPELIST = {'wmonkey_conv_only','cmonkey_conv_only'};
 
 for T = 1:length(TYPELIST)
     
@@ -55,7 +55,7 @@ for T = 1:length(TYPELIST)
         
         for i = 1:length(Firstx)
             
-            this_subject = Fix_subj{i};
+            this_subject = 1;%Fix_subj{i};
             
             display(['processing ... img: ' num2str(i) ]);
             fx = double(Firstx{i});
@@ -155,8 +155,8 @@ for T = 1:length(TYPELIST)
                 fixatedPlace = sal(fixatedPlace_lefty:fixatedPlace_righty, fixatedPlace_leftx:fixatedPlace_rightx);
                 salvalue = mean(mean(fixatedPlace));
                 
-                %if strcmp(subtype,'cmonkey') && (sum(size(fixatedPlace) == [39 39]) < 2)     
-                    %potential_out = 1;
+                %if strcmp(subtype,'cmonkey') && (sum(size(fixatedPlace) == [39 39]) < 2                    
+                %   potential_out = 1;
                 %end
                 
                 sim = [sim salvalue];
