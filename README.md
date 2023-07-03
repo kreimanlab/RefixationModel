@@ -2,7 +2,7 @@
 
 Authors: Mengmi Zhang, Will Xiao, Olivia Rose, Katarina Bendtz, Margaret Livingston, Carlos Ponce, and Gabriel Kreiman
 
-This repository contains an implementation of a deep learning model for predicting return fixations and eye movement data across tasks and species. Our paper is currently in submission.
+This repository contains an implementation of a deep learning model for predicting return fixations and eye movement data across tasks and species. Our paper is published in PLOS Computational Biology, 2022.
 
 ## Project Description
 
